@@ -7,6 +7,6 @@ Sayan Dahiya -- Frontend Engineer
 
 Richard Ortiz -- Backend Engineer
 
-Linus Nagata -- AI/Backend Engineer
+Linus Nagata -- Backend Engineer
 
-Steven Zhou -- AI/Database Engineer
+Steven Zhou -- Backend/Database Engineer
