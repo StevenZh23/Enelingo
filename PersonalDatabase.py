@@ -26,7 +26,8 @@ def register_user(username, firstname, lastname, email, password, cityofresidenc
         "current_cost_per_minute":currentcost,
         "cost_per_watt_minute":costwatt,
         "budget":budget,
-        "spent":spent
+        "spent":spent,
+        "streak": 0
     }
     users_collection.insert_one(user_info)
 
@@ -101,9 +102,11 @@ def change_budget(user, budget):
     )
 
 def reset_spent(user):
+    x = users_collection.find({"user":user})
+    x = x[0]["streak"]
     users_collection.update_one(
         {"user":user},
-        {"$set": {"spent":0}}
+        {"$set": {"spent":0, "streak":x+1} }
     )
 
 #register_location("Atlanta", 0.17 / 60000)
