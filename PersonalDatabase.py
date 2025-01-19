@@ -5,7 +5,7 @@ from dotenv import find_dotenv, load_dotenv
 dotenv_path = find_dotenv()
 load_dotenv(dotenv_path)
 
-#API_KEY = os.getenv("API_KEY")
+
 PASSWORD = os.getenv("PASSWORD")
 CONNECTION_STRING = f"mongodb+srv://stevenzdragons:{PASSWORD}@enelingo.qn39p.mongodb.net/?retryWrites=true&w=majority&appName=Enelingo"
 
@@ -103,17 +103,20 @@ def change_budget(user, budget):
 
 def reset_spent(user):
     x = users_collection.find({"user":user})
-    x = x[0]["streak"]
+    x = x[0]
     users_collection.update_one(
         {"user":user},
-        {"$set": {"spent":0, "streak":x+1} }
+        {"$set": {"spent":0, "streak":x["streak"]+1} }
     )
 
+def get_database():
+    return db
+
 #register_location("Atlanta", 0.17 / 60000)
-#register_appliances("Ultratoaster", "toaster", 25000, "binky", "off")
+#register_appliances("Ultratoaster", "Toaster", 25000, "binky", "off")
 #register_user("binky", "Nathan", "A", "binkybarnes@gmail.com", "iambinky", "Atlanta", 0, .17/60000, 200, 0)
 
-#change_budget("binky", 300)
+change_budget("binky", 300)
 turn_on_off("binky", "Ultratoaster")
 spend_energy("binky")
 
