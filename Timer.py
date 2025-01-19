@@ -14,8 +14,9 @@ for i in range(0,6):
 
 # method to update time
 def updateTime():
-    currTime.sleep(60)
-    timeToReset-= currTime
+    global timeToReset
+    time.sleep(60)
+    timeToReset -= 60
 
 #method to reset time
 def reset():
@@ -24,6 +25,3 @@ def reset():
     timeToReset = 7 * 24 * 60 * 60    
     
 
-
-
-    
