@@ -2,6 +2,8 @@
 #imports
 from datetime import datetime, timedelta
 import time
+import threading
+
 
 # instance data
 currTime = time.localtime()
@@ -18,10 +20,14 @@ def updateTime():
     time.sleep(60)
     timeToReset -= 60
 
+def start_timer_in_background():
+    timer_thread = threading.Thread(target=updateTime, args=(60,))
+    timer_thread.daemon = True  # Ensures thread exits when the main program ends
+    timer_thread.start()
+
 #method to reset time
 def reset():
     while(timeToReset > 0):
-        updateTime()
+        start_timer_in_background()
     timeToReset = 7 * 24 * 60 * 60    
     
-
