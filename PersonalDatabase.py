@@ -46,6 +46,9 @@ def register_appliances(appliancename, appliancetype, wattage, user, onoff):
     appliance_collection.insert_one(appliances_info)
 
 
+def remove_appliances(appliancename, user):
+    appliance_collection.delete_one({"user":user, "appliance_name":appliancename})
+
 location_collection = db["locations"]
 
 def register_location(locationname, costperwatt):
@@ -115,9 +118,9 @@ def get_database():
 #register_location("Atlanta", 0.17 / 60000)
 #register_appliances("Ultratoaster", "Toaster", 25000, "binky", "off")
 #register_user("binky", "Nathan", "A", "binkybarnes@gmail.com", "iambinky", "Atlanta", 0, .17/60000, 200, 0)
+#remove_appliances("Ultratoaster","binky")
+#change_budget("binky", 300)
+#turn_on_off("binky", "Ultratoaster")
+#spend_energy("binky")
 
-change_budget("binky", 300)
-turn_on_off("binky", "Ultratoaster")
-spend_energy("binky")
-
-reset_spent("binky")
+#reset_spent("binky")

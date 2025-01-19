@@ -6,7 +6,9 @@ from kivymd.app import MDApp
 from kivy.uix.behaviors import ButtonBehavior
 from kivy.uix.image import Image
 from kivymd.uix.card import MDCard
-
+from PersonalDatabase import *
+from Timer import *
+from ImageReader import *
 KV = '''
 ScreenManager:
     MainScreen:
@@ -273,7 +275,7 @@ ScreenManager:
 
 
 
-
+df = get_database()
 
 class MainScreen(Screen):
 
@@ -300,6 +302,7 @@ class SocialScreen(BoxLayout):
     pass
 
 class DeviceCard(BoxLayout):
+    username = "binky"
     device_name = StringProperty("Device")
     wattage = NumericProperty(0)
     is_active = BooleanProperty(False)
@@ -309,21 +312,28 @@ class DeviceCard(BoxLayout):
         self.ids.card.md_bg_color = [0.1, 0.1, 0.1, 1]
 
     def toggle_color(self):
+
         if self.is_active:
             self.ids.card.md_bg_color = [0.1, 0.1, 0.1, 1]
         else:
             self.ids.card.md_bg_color = [0.1, 0.8, 0.1, 1]
+        
         self.is_active = not self.is_active
+        turn_on_off(self.username, self.device_name)
 
 class MainApp(MDApp):
 
-    full_name  = "George Burdell" #Set Name with this Variable
+    username = "binky"
+    
+    current_user = df["users"].find({"user":username})[0]
+
+    full_name  = current_user["first_name"] + " " + current_user["last_name"] #Set Name with this Variable
 
     image_path = "Images\profile_picture.jpg"
 
-    budget_dollars = 40 #Set Budget
+    budget_dollars = current_user["budget"] #Set Budget
 
-    used_dollars = 30.40 #Set used money
+    used_dollars = current_user["spent"] #Set used money
 
     remaining_dollars = budget_dollars - used_dollars #Set Remaining Money
 
@@ -335,14 +345,15 @@ class MainApp(MDApp):
         return Builder.load_string(KV)
 
     def on_start(self):
+
         self.populate_devices()
         self.populate_appliances()
         self.populate_home_energy()
-
+        start_background_timer(self.username)
 
     def populate_devices(self):
-        devices = ["Desktop PC", "Laptop", "Smartphone", "Tablet"]
-        wattages = [120, 200, 40, 60]
+        devices = ["Ultratoaster"]
+        wattages = [25000]
         for i in range(len(devices)):
             self.root.get_screen("main").ids.device_list.add_widget(DeviceCard(device_name=devices[i], wattage=wattages[i]))
 
